@@ -11,10 +11,14 @@ namespace Pickle
         Dictionary<T, double> items;
         List<Range<T>> ranges;
 
+        Random rand;
+
         public Picker()
         {
             items = new Dictionary<T, double>();
             ranges = new List<Range<T>>();
+
+            rand = new Random();
         }
 
         public void AddItem(T item, double chance)
@@ -49,7 +53,6 @@ namespace Pickle
             if (items.Values.Sum() != 100)
                 throw new PickleException("Sum of item probabilites isn't 100");
 
-            Random rand = new Random();
             double val = rand.Next(0, 100);
 
             var validItems = ranges.Where(r => r.Contains(val)).Select(r => r.Item);

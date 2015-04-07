@@ -26,7 +26,7 @@ namespace Pickle
 
         public bool Contains(double value)
         {
-            return value >= lowBound && value <= highBound;
+            return value >= lowBound && value < highBound;
         }
     }
 }
