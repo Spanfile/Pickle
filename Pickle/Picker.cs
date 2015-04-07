@@ -47,6 +47,19 @@ namespace Pickle
         }
 
         /// <summary>
+        /// Remove an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
+        /// </summary>
+        /// <param name="item">The item to remove</param>
+        public void RemoveItem(T item)
+        {
+            if (!items.ContainsKey(item))
+                throw new ArgumentException(String.Format("Item {0} doesn't exist", item));
+
+            items.Remove(item);
+            UpdateRanges();
+        }
+
+        /// <summary>
         /// Updates the probability of an existing item in the picker
         /// </summary>
         /// <param name="item">The item of which's probability to update</param>
@@ -58,6 +71,7 @@ namespace Pickle
                 throw new ArgumentException("Item hasn't been added to the picker");
 
             items[item] = prob;
+            UpdateRanges();
         }
 
         void UpdateRanges()
