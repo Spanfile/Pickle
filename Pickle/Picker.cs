@@ -60,6 +60,15 @@ namespace Pickle
         }
 
         /// <summary>
+        /// Removes all items in the picker.
+        /// </summary>
+        public void ClearItems()
+        {
+            items.Clear();
+            ranges.Clear();
+        }
+
+        /// <summary>
         /// Updates the probability of an existing item in the picker
         /// </summary>
         /// <param name="item">The item of which's probability to update</param>
