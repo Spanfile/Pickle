@@ -58,7 +58,7 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns a random item from the list of items based on their probabilities
+        /// Returns a random item from the list of items, based on their probabilities
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Pickle.PickleException">Thrown when the sum of all items probabilites isn't 100</exception>
@@ -78,6 +78,12 @@ namespace Pickle
             return validItems.First();
         }
 
+        /// <summary>
+        /// Returns multiple random items from the list of items, based on their probabilities
+        /// </summary>
+        /// <param name="count">How many items to return</param>
+        /// <returns></returns>
+        /// <exception cref="Pickle.PickleException">Thrown when count is less than one</exception>
         public IEnumerable<T> NextItems(int count)
         {
             if (count < 1)
