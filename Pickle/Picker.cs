@@ -93,12 +93,7 @@ namespace Pickle
 
             double val = rand.Next(0, 100);
 
-            var validItems = ranges.Where(r => r.Contains(val)).Select(r => r.Item);
-
-            if (validItems.Count() > 1)
-                throw new InvalidOperationException("Multiple valid items found. This should never happen!");
-
-            return validItems.First();
+            return ranges.Where(r => r.Contains(val)).Select(r => r.Item).Single();
         }
 
         /// <summary>
