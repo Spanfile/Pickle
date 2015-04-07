@@ -91,7 +91,7 @@ namespace Pickle
                 changes = false;
             }
 
-            double val = rand.Next(0, 100);
+            double val = rand.NextDouble() * 100d;
 
             return ranges.Where(r => r.Contains(val)).Select(r => r.Item).Single();
         }
