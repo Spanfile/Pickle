@@ -7,7 +7,7 @@
     <ProjectGuid>{D2270F20-F5F6-48C4-96BD-D4F4067480BF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Picker</RootNamespace>
+    <RootNamespace>Pickle</RootNamespace>
     <AssemblyName>Picker</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

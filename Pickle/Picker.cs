@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Picker
+namespace Pickle
 {
     public sealed class Picker<T> where T : struct
     {
