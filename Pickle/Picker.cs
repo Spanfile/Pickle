@@ -50,10 +50,11 @@ namespace Pickle
         /// Removes an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
         /// </summary>
         /// <param name="item">The item to remove.</param>
+        /// <exception cref="System.ArgumentException">Thrown when item doesn't exist in the picker.</exception>
         public void RemoveItem(T item)
         {
             if (!items.ContainsKey(item))
-                throw new ArgumentException(String.Format("Item {0} doesn't exist", item));
+                throw new ArgumentException(String.Format("Item {0} doesn't exist in the picker", item));
 
             items.Remove(item);
             UpdateRanges();
