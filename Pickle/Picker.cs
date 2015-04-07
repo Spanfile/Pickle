@@ -17,7 +17,7 @@ namespace Pickle
         double itemSum = 0;
 
         /// <summary>
-        /// Create a new Picker
+        /// Creates a new Picker which can be used to pick items based on their probabilities of being picked
         /// </summary>
         public Picker()
         {
@@ -28,11 +28,11 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Add an item to the picker
+        /// Adds an item to the picker.
         /// </summary>
-        /// <param name="item">The item to add</param>
-        /// <param name="prob">The probability for the item to be returned</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100</exception>
+        /// <param name="item">The item to add.</param>
+        /// <param name="prob">The probability for the item to be returned.</param>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
         /// <exception cref="System.ArgumentException">Thrown when item has already been added</exception>
         public void AddItem(T item, double prob)
         {
@@ -47,9 +47,9 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Remove an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
+        /// Removes an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
         /// </summary>
-        /// <param name="item">The item to remove</param>
+        /// <param name="item">The item to remove.</param>
         public void RemoveItem(T item)
         {
             if (!items.ContainsKey(item))
@@ -69,11 +69,11 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Updates the probability of an existing item in the picker
+        /// Updates the probability of an existing item in the picker.
         /// </summary>
-        /// <param name="item">The item of which's probability to update</param>
-        /// <param name="prob">The new probability of the item</param>
-        /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker</exception>
+        /// <param name="item">The item of which's probability to update.</param>
+        /// <param name="prob">The new probability of the item.</param>
+        /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker.</exception>
         public void UpdateProbability(T item, double prob)
         {
             if (!items.ContainsKey(item))
@@ -98,10 +98,10 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns a random item from the picker, based on the probabilities of the items
+        /// Returns a random item from the picker, based on the probabilities of each item.
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
         public T NextItem()
         {
             if (changes)
@@ -120,11 +120,11 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns a random item from the picker, based on the probabilities of the items
+        /// Returns a random item from the picker, based on the probabilities of each item.
         /// </summary>
-        /// <param name="count">How many items to return</param>
+        /// <param name="count">How many items to return.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when count is less than one</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
         public IEnumerable<T> NextItems(int count)
         {
             if (count < 1)
