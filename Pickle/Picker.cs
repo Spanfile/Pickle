@@ -77,5 +77,14 @@ namespace Pickle
 
             return validItems.First();
         }
+
+        public IEnumerable<T> NextItems(int count)
+        {
+            if (count < 1)
+                throw new PickleException("Count is too low");
+
+            for (int i = 0; i < count; i++)
+                yield return NextItem();
+        }
     }
 }

@@ -32,6 +32,10 @@ namespace Example
             MyEnum item = picker.NextItem();
             Console.WriteLine("You got {0}!", item);
 
+            // take multiple values and display them
+            MyEnum[] items = picker.NextItems(10).ToArray();
+            Console.WriteLine("You also got {0} and {1}!", String.Join(", ", items.Take(9)), items.Last());
+
             Console.ReadKey();
         }
     }
