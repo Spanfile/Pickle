@@ -28,15 +28,10 @@ namespace Example
             picker.AddItem(MyEnum.Item3, 15);
             picker.AddItem(MyEnum.Item4, 15);
 
-            // take a certain amount of items from the picker and count how many of them are returned
-            Dictionary<MyEnum, int> items = Enum.GetValues(typeof(MyEnum)).Cast<MyEnum>().ToDictionary(n => n, n => 0);
+            // take a value from the picker and display it
+            MyEnum item = picker.NextItem();
+            Console.WriteLine("You got {0}!", item);
 
-            int iterations = 100000;
-            for (int i = 0; i < iterations; i++)
-                items[picker.NextItem()] += 1;
-
-            // show the returned items, how many of them were returned and their percentage of the total amount
-            Console.WriteLine(String.Join("\n", items.Select(p => String.Format("{0}: {1}, {2}%", p.Key, p.Value, (p.Value / (double)iterations) * 100d))));
             Console.ReadKey();
         }
     }
