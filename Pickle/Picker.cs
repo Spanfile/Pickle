@@ -43,6 +43,20 @@ namespace Pickle
             UpdateRanges();
         }
 
+        /// <summary>
+        /// Updates the probability of an existing item in the picker
+        /// </summary>
+        /// <param name="item">The item of which's probability to update</param>
+        /// <param name="prob">The new probability of the item</param>
+        /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker</exception>
+        public void UpdateProbability(T item, double prob)
+        {
+            if (!items.ContainsKey(item))
+                throw new ArgumentException("Item hasn't been added to the picker");
+
+            items[item] = prob;
+        }
+
         void UpdateRanges()
         {
             ranges.Clear();
@@ -56,7 +70,7 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns a random item from the list of items, based on their probabilities
+        /// Returns a random item from the picker, based on the probabilities of the items
         /// </summary>
         /// <returns></returns>
         /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100</exception>
@@ -76,7 +90,7 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns multiple random items from the list of items, based on their probabilities
+        /// Returns a random item from the picker, based on the probabilities of the items
         /// </summary>
         /// <param name="count">How many items to return</param>
         /// <returns></returns>
