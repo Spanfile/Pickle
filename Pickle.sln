@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pickle", "Pickle\Pickle.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example", "Example\Example.csproj", "{8D91D715-2E66-431B-847F-ADB59C2491EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedTest", "SpeedTest\SpeedTest.csproj", "{490B8732-E1A1-4250-8AE4-8ED7F8D4D4DF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{8D91D715-2E66-431B-847F-ADB59C2491EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D91D715-2E66-431B-847F-ADB59C2491EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D91D715-2E66-431B-847F-ADB59C2491EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{490B8732-E1A1-4250-8AE4-8ED7F8D4D4DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{490B8732-E1A1-4250-8AE4-8ED7F8D4D4DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{490B8732-E1A1-4250-8AE4-8ED7F8D4D4DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{490B8732-E1A1-4250-8AE4-8ED7F8D4D4DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
