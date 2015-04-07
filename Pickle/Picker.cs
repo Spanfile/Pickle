@@ -29,17 +29,15 @@ namespace Pickle
         /// </summary>
         /// <param name="item">The item to add</param>
         /// <param name="prob">The probability for the item to be returned</param>
-        /// <exception cref="Picke.PickleException">Thrown when given item is already in the picker's list or when chance is out of bounds</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100</exception>
+        /// <exception cref="System.ArgumentException">Thrown when item has already been added</exception>
         public void AddItem(T item, double prob)
         {
-            if (prob > 100)
-                throw new PickleException(String.Format("Probability for item {0} is too high (> 100)", item));
-
-            if (prob < 1)
-                throw new PickleException(String.Format("Probability for item {0} is too low (< 1)", item));
+            if (prob > 100 || prob < 1)
+                throw new ArgumentOutOfRangeException("prob");
 
             if (items.ContainsKey(item))
-                throw new PickleException(String.Format("Item {0} is already added", item));
+                throw new ArgumentException(String.Format("Item {0} is already added", item));
 
             items.Add(item, prob);
             UpdateRanges();
@@ -61,19 +59,18 @@ namespace Pickle
         /// Returns a random item from the list of items, based on their probabilities
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="Pickle.PickleException">Thrown when the sum of all items probabilites isn't 100</exception>
-        /// <exception cref="Pickle.CriticalPickleException">Thrown if the picker finds multiple valid items for one chosen value. This should never be thrown!</exception>
+        /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100</exception>
         public T NextItem()
         {
             if (items.Values.Sum() != 100)
-                throw new PickleException("Sum of item probabilites isn't 100");
+                throw new InvalidOperationException("Sum of item probabilites isn't 100");
 
             double val = rand.Next(0, 100);
 
             var validItems = ranges.Where(r => r.Contains(val)).Select(r => r.Item);
 
             if (validItems.Count() > 1)
-                throw new CriticalPickleException("Multiple valid items found.");
+                throw new InvalidOperationException("Multiple valid items found. This should never happen!");
 
             return validItems.First();
         }
@@ -83,11 +80,11 @@ namespace Pickle
         /// </summary>
         /// <param name="count">How many items to return</param>
         /// <returns></returns>
-        /// <exception cref="Pickle.PickleException">Thrown when count is less than one</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when count is less than one</exception>
         public IEnumerable<T> NextItems(int count)
         {
             if (count < 1)
-                throw new PickleException("Count is too low");
+                throw new ArgumentOutOfRangeException("count");
 
             for (int i = 0; i < count; i++)
                 yield return NextItem();
