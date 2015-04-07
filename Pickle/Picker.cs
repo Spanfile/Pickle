@@ -13,6 +13,9 @@ namespace Pickle
 
         Random rand;
 
+        bool changes = false;
+        double itemSum = 0;
+
         /// <summary>
         /// Create a new Picker
         /// </summary>
@@ -67,6 +70,8 @@ namespace Pickle
                 ranges.Add(new Range<T>(pair.Item, prev, prev + pair.Prob));
                 prev += pair.Prob;
             }
+
+            changes = true;
         }
 
         /// <summary>
@@ -76,8 +81,15 @@ namespace Pickle
         /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100</exception>
         public T NextItem()
         {
-            if (items.Values.Sum() != 100)
-                throw new InvalidOperationException("Sum of item probabilites isn't 100");
+            if (changes)
+            {
+                itemSum = items.Values.Sum();
+
+                if (itemSum != 100)
+                    throw new InvalidOperationException("Sum of item probabilites isn't 100");
+
+                changes = false;
+            }
 
             double val = rand.Next(0, 100);
 
