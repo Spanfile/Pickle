@@ -13,6 +13,9 @@ namespace Pickle
 
         Random rand;
 
+        /// <summary>
+        /// Create a new Picker
+        /// </summary>
         public Picker()
         {
             items = new Dictionary<T, double>();
@@ -21,18 +24,24 @@ namespace Pickle
             rand = new Random();
         }
 
-        public void AddItem(T item, double chance)
+        /// <summary>
+        /// Add an item to the picker
+        /// </summary>
+        /// <param name="item">The item to add</param>
+        /// <param name="prob">The probability for the item to be returned</param>
+        /// <exception cref="Picke.PickleException">Thrown when given item is already in the picker's list or when chance is out of bounds</exception>
+        public void AddItem(T item, double prob)
         {
-            if (chance > 100)
+            if (prob > 100)
                 throw new PickleException(String.Format("Probability for item {0} is too high (> 100)", item));
 
-            if (chance < 1)
+            if (prob < 1)
                 throw new PickleException(String.Format("Probability for item {0} is too low (< 1)", item));
 
             if (items.ContainsKey(item))
                 throw new PickleException(String.Format("Item {0} is already added", item));
 
-            items.Add(item, chance);
+            items.Add(item, prob);
             UpdateRanges();
         }
 
@@ -48,6 +57,12 @@ namespace Pickle
             }
         }
 
+        /// <summary>
+        /// Returns a random item from the list of items based on their probabilities
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Pickle.PickleException">Thrown when the sum of all items probabilites isn't 100</exception>
+        /// <exception cref="Pickle.CriticalPickleException">Thrown if the picker finds multiple valid items for one chosen value. This should never be thrown!</exception>
         public T NextItem()
         {
             if (items.Values.Sum() != 100)
