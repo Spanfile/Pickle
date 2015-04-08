@@ -6,20 +6,101 @@ using System.Threading.Tasks;
 
 namespace Pickle
 {
-    public sealed class Category<T>
+    // cats
+    // cats everywhere
+    internal class Category<T>
     {
+        public Category<T> Parent
+        {
+            get { return parent; }
+        }
+
+        public string Path
+        {
+            get
+            {
+                if (parent == null)
+                    return Name;
+
+                return parent.Path + "/" + Name;
+            }
+        }
+
         IEnumerable<T> Items
         {
             get { return ranges.Select(r => r.Item); }
         }
 
+        IEnumerable<string> CatNames
+        {
+            get { return childCats.Select(c => c.Name); }
+        }
+
+        public string Name { get; set; }
+
+        Category<T> parent;
+
         List<Category<T>> childCats; // lol cats
         List<Range<T>> ranges;
 
-        public Category()
+        Random rand;
+
+        public Category(string name, Category<T> parent, Random rand)
         {
             ranges = new List<Range<T>>();
             childCats = new List<Category<T>>();
+
+            Name = name;
+
+            this.rand = rand;
+            this.parent = parent;
+
+            Console.WriteLine(Path);
+        }
+
+        public void AddCategory(string name)
+        {
+            if (childCats.Select(c => c.Name).Contains(name))
+                throw new ArgumentException(String.Format("Category {0} already contains child category {1}", Name, name));
+
+            childCats.Add(new Category<T>(name, this, rand));
+        }
+
+        public void RemoveCategory(string name)
+        {
+            if (!childCats.Select(c => c.Name).Contains(name))
+                throw new ArgumentException(String.Format("Category {0} doesn't contain a child category {1}", Name, name));
+        }
+
+        public void Remove()
+        {
+            if (parent != null)
+                parent.RemoveCategory(Name);
+        }
+
+        public Category<T> FindCat(string path)
+        {
+            string[] pathArgs = path.Split('/');
+
+            if (pathArgs.Length < 1)
+                return this;
+
+            string find = pathArgs.First();
+
+            if (!childCats.Select(c => c.Name).Contains(find))
+                return null;
+
+            return childCats.Where(c => c.Name == find).Single().FindCat(String.Join("/", pathArgs.Skip(1)));
+        }
+
+        public T FindItem(string name, Func<T, string> nameFunc)
+        {
+            var itemNames = Items.Select(i => new { Item = i, Match = nameFunc(i) == name });
+            T match = itemNames.Single(a => a.Match).Item;
+            if (match == null)
+                throw new ArgumentException(String.Format("Item {0} doesn't exist in the category"));
+
+            return match;
         }
 
         public void AddItem(T item, double prob)
@@ -41,7 +122,7 @@ namespace Pickle
         public void RemoveItem(T item)
         {
             if (!Items.Contains(item))
-                throw new ArgumentException(String.Format("Item {0} doesn't exist in the picker", item));
+                throw new ArgumentException(String.Format("Item {0} doesn't exist in the category", item));
 
             int index = Items.ToList().IndexOf(item);
             ranges.RemoveAll(r => r.Item.Equals(item));
@@ -51,7 +132,7 @@ namespace Pickle
         public void UpdateProbability(T item, double prob)
         {
             if (!Items.Contains(item))
-                throw new ArgumentException(String.Format("Item {0} doesn't exist in the picker", item));
+                throw new ArgumentException(String.Format("Item {0} doesn't exist in the category", item));
 
             ranges.Single(r => r.Item.Equals(item)).HighBound = prob;
             UpdateRanges();

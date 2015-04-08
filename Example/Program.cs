@@ -36,6 +36,10 @@ namespace Example
             MyEnum[] items = picker.NextItems(10).ToArray();
             Console.WriteLine("You also got {0} and {1}!", String.Join(", ", items.Take(9)), items.Last());
 
+            CategorizedPicker<MyEnum> catPick = new CategorizedPicker<MyEnum>(m => m.ToString());
+            catPick.AddCategory("Test");
+            catPick.AddCategory("Test/Another");
+
             Console.ReadKey();
         }
     }
