@@ -39,7 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CategorizedPicker.cs" />
+    <Compile Include="CategorisedPicker.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Picker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

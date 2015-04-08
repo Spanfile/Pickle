@@ -97,10 +97,21 @@ namespace Pickle
         {
             return rootCat.NextItem();
         }
+        public T NextItem(string catPath)
+        {
+            if (catPath.Trim() == "")
+                return rootCat.NextItem();
+
+            return FindCat(catPath).NextItem();
+        }
 
         public IEnumerable<T> NextItems(int count)
         {
             return rootCat.NextItems(count);
+        }
+        public IEnumerable<T> NextItems(string catPath, int count)
+        {
+            return FindCat(catPath).NextItems(count);
         }
 
         Category<T> FindCat(string path)
