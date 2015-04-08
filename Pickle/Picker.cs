@@ -18,7 +18,6 @@ namespace Pickle
         Random rand;
 
         bool changes = false;
-        double itemSum = 0;
 
         /// <summary>
         /// Creates a new Picker which can be used to pick items based on their probabilities of being picked. Uses the default Random object.
@@ -131,9 +130,7 @@ namespace Pickle
         {
             if (changes)
             {
-                itemSum = ranges.Select(r => r.Size).Sum();
-
-                if (itemSum != 100)
+                if (ranges.Select(r => r.Size).Sum() != 100)
                     throw new InvalidOperationException("Sum of item probabilites isn't 100");
 
                 changes = false;
