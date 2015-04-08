@@ -129,6 +129,7 @@ namespace Pickle
         /// <param name="item">The item of which's probability to update.</param>
         /// <param name="prob">The new probability of the item.</param>
         /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
         public void UpdateProbability(T item, double prob)
         {
             UpdateProbability("", item, prob);
@@ -140,6 +141,7 @@ namespace Pickle
         /// <param name="item">The item of which's probability to update.</param>
         /// <param name="prob">The new probability of the item.</param>
         /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker or when path is invalid.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
         public void UpdateProbability(string path, T item, double prob)
         {
             if (path.Trim() == "")
