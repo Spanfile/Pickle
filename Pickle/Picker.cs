@@ -8,7 +8,11 @@ namespace Pickle
 {
     public sealed class Picker<T>
     {
-        Dictionary<T, double> items; // TODO: remove this and only have the ranges
+        IEnumerable<T> Items
+        {
+            get { return ranges.Select(r => r.Item); }
+        }
+
         List<Range<T>> ranges;
 
         Random rand;
@@ -30,7 +34,6 @@ namespace Pickle
         /// <param name="rand">Your Random object.</param>
         public Picker(Random rand)
         {
-            items = new Dictionary<T, double>();
             ranges = new List<Range<T>>();
 
             this.rand = rand;
@@ -48,11 +51,14 @@ namespace Pickle
             if (prob > 100 || prob < 1)
                 throw new ArgumentOutOfRangeException("prob");
 
-            if (items.ContainsKey(item))
+            if (Items.Contains(item))
                 throw new ArgumentException(String.Format("Item {0} is already added", item));
 
-            items.Add(item, prob);
-            UpdateRanges();
+            Range<T> prev = ranges.LastOrDefault();
+            if (prev == null)
+                ranges.Add(new Range<T>(item, 0, prob));
+            else
+                ranges.Add(new Range<T>(item, prev.HighBound, prev.HighBound + prob));
         }
 
         /// <summary>
@@ -62,10 +68,10 @@ namespace Pickle
         /// <exception cref="System.ArgumentException">Thrown when item doesn't exist in the picker.</exception>
         public void RemoveItem(T item)
         {
-            if (!items.ContainsKey(item))
+            if (!Items.Contains(item))
                 throw new ArgumentException(String.Format("Item {0} doesn't exist in the picker", item));
 
-            items.Remove(item);
+            ranges.RemoveAll(r => r.Item.Equals(item));
             UpdateRanges();
         }
 
@@ -74,7 +80,6 @@ namespace Pickle
         /// </summary>
         public void ClearItems()
         {
-            items.Clear();
             ranges.Clear();
         }
 
@@ -86,10 +91,10 @@ namespace Pickle
         /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker.</exception>
         public void UpdateProbability(T item, double prob)
         {
-            if (!items.ContainsKey(item))
+            if (!Items.Contains(item))
                 throw new ArgumentException("Item hasn't been added to the picker");
 
-            items[item] = prob;
+            ranges.Single(r => r.Item.Equals(item)).HighBound = prob;
             UpdateRanges();
         }
 
@@ -99,18 +104,19 @@ namespace Pickle
         /// <returns></returns>
         public bool HasItems()
         {
-            return items.Any();
+            return ranges.Any();
         }
 
         void UpdateRanges()
         {
-            ranges.Clear();
-
             double prev = 0;
-            foreach (var pair in items.Select(k => new { Item = k.Key, Prob = k.Value }))
+            foreach (Range<T> range in ranges)
             {
-                ranges.Add(new Range<T>(pair.Item, prev, prev + pair.Prob));
-                prev += pair.Prob;
+                if (prev > 0)
+                {
+                    range.Move(range.LowBound - prev);
+                    prev = range.HighBound;
+                }
             }
 
             changes = true;
@@ -125,7 +131,7 @@ namespace Pickle
         {
             if (changes)
             {
-                itemSum = items.Values.Sum();
+                itemSum = ranges.Select(r => r.Size).Sum();
 
                 if (itemSum != 100)
                     throw new InvalidOperationException("Sum of item probabilites isn't 100");
