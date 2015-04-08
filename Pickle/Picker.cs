@@ -17,14 +17,23 @@ namespace Pickle
         double itemSum = 0;
 
         /// <summary>
-        /// Creates a new Picker which can be used to pick items based on their probabilities of being picked
+        /// Creates a new Picker which can be used to pick items based on their probabilities of being picked. Uses the default Random object.
         /// </summary>
         public Picker()
+            : this(new Random())
+        {
+        }
+
+        /// <summary>
+        /// Creates a new Picker which can be used to pick items based on their probabilites of being picked. You can supply your own Random object.
+        /// </summary>
+        /// <param name="rand">Your Random object.</param>
+        public Picker(Random rand)
         {
             items = new Dictionary<T, double>();
             ranges = new List<Range<T>>();
 
-            rand = new Random();
+            this.rand = rand;
         }
 
         /// <summary>
@@ -82,6 +91,15 @@ namespace Pickle
 
             items[item] = prob;
             UpdateRanges();
+        }
+
+        /// <summary>
+        /// Returns true if the picker contains any items.
+        /// </summary>
+        /// <returns></returns>
+        public bool HasItems()
+        {
+            return items.Any();
         }
 
         void UpdateRanges()

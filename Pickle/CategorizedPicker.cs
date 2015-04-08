@@ -43,6 +43,11 @@ namespace Pickle
             cat.AddCategory(name);
         }
 
+        public void RemoveCategory(string path)
+        {
+            FindCat(path).Remove();
+        }
+
         public void AddItem(T item, double prob)
         {
             AddItem("", item, prob);
@@ -88,9 +93,14 @@ namespace Pickle
             FindCat(path).UpdateProbability(item, prob);
         }
 
-        public void RemoveCategory(string path)
+        public T NextItem()
         {
-            FindCat(path).Remove();
+            return rootCat.NextItem();
+        }
+
+        public IEnumerable<T> NextItems(int count)
+        {
+            return rootCat.NextItems(count);
         }
 
         Category<T> FindCat(string path)

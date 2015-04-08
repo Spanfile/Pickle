@@ -107,5 +107,20 @@ namespace Pickle
         {
             picker.ClearItems();
         }
+
+        public T NextItem()
+        {
+            if (picker.HasItems())
+                return picker.NextItem();
+
+            int index = rand.Next(0, childCats.Count - 1);
+            return childCats[index].NextItem();
+        }
+
+        public IEnumerable<T> NextItems(int count)
+        {
+            for (int i = 0; i < count; i++)
+                yield return NextItem();
+        }
     }
 }
