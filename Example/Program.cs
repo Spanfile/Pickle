@@ -39,7 +39,7 @@ namespace Example
             // create a new categorised picker
             // you need to give a method that takes in your item and returns a name for that item
             // this could be a simple method in your item, such as YourItem.GetName()
-            CategorizedPicker<MyEnum> catPick = new CategorizedPicker<MyEnum>(m => m.ToString());
+            CategorisedPicker<MyEnum> catPick = new CategorisedPicker<MyEnum>(m => m.ToString());
 
             // add a category called "Test" to the picker
             catPick.AddCategory("Test");

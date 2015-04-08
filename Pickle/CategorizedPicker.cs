@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Pickle
 {
-    public sealed class CategorizedPicker<T>
+    public sealed class CategorisedPicker<T>
     {
         Category<T> rootCat;
 
@@ -14,7 +14,7 @@ namespace Pickle
 
         Random rand;
 
-        public CategorizedPicker(Func<T, string> getTNameFunc)
+        public CategorisedPicker(Func<T, string> getTNameFunc)
         {
             rand = new Random();
 
