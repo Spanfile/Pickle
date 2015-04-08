@@ -97,11 +97,5 @@ namespace Pickle
         {
             return rootCat.FindCat(path);
         }
-
-        T FindItem(string path)
-        {
-            string[] pathArgs = path.Split('/');
-            return FindCat(String.Join("/", pathArgs.Take(pathArgs.Length - 1))).FindItem(pathArgs.Last(), getTName);
-        }
     }
 }
