@@ -8,7 +8,7 @@ namespace Pickle
 {
     public sealed class Picker<T>
     {
-        Dictionary<T, double> items;
+        Dictionary<T, double> items; // TODO: remove this and only have the ranges
         List<Range<T>> ranges;
 
         Random rand;

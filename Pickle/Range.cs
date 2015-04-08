@@ -13,6 +13,23 @@ namespace Pickle
             get { return item; }
         }
 
+        public double LowBound
+        {
+            get { return lowBound; }
+            set { lowBound = value; }
+        }
+
+        public double HighBound
+        {
+            get { return highBound; }
+            set { highBound = value; }
+        }
+
+        public double Size
+        {
+            get { return highBound - lowBound; }
+        }
+
         T item;
         double lowBound;
         double highBound;
@@ -27,6 +44,12 @@ namespace Pickle
         public bool Contains(double value)
         {
             return value >= lowBound && value < highBound;
+        }
+
+        public void Move(double amount)
+        {
+            lowBound += amount;
+            highBound += amount;
         }
     }
 }
