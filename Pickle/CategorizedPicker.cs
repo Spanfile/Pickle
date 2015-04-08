@@ -27,7 +27,7 @@ namespace Pickle
         {
             AddCategory(name, "");
         }
-        public void AddCategory(string name, string path)
+        public void AddCategory(string name, string path) // TODO: should this work just with one arg, the full path of the category you want to add?
         {
             if (path.Trim() == "")
             {

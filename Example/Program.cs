@@ -38,8 +38,8 @@ namespace Example
 
             CategorizedPicker<MyEnum> catPick = new CategorizedPicker<MyEnum>(m => m.ToString());
             catPick.AddCategory("Test");
-            catPick.AddCategory("Test/Another");
-            catPick.AddItem("Test", MyEnum.Item1, 100);
+            catPick.AddCategory("Another", "Test");
+            catPick.AddItem("Test/Another", MyEnum.Item1, 100);
 
             Console.ReadKey();
         }
