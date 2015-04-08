@@ -44,7 +44,7 @@ namespace Pickle
         /// <param name="item">The item to add.</param>
         /// <param name="prob">The probability for the item to be returned.</param>
         /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when item has already been added</exception>
+        /// <exception cref="System.ArgumentException">Thrown when item has already been added.</exception>
         public void AddItem(T item, double prob)
         {
             if (prob > 100 || prob < 1)
@@ -88,7 +88,7 @@ namespace Pickle
         /// <param name="item">The item of which's probability to update.</param>
         /// <param name="prob">The new probability of the item.</param>
         /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker.</exception>
-        public void UpdateProbability(T item, double prob)
+        public void UpdateProbability(T item, double prob) // TODO: add check for prob range
         {
             if (!Items.Contains(item))
                 throw new ArgumentException("Item hasn't been added to the picker");
