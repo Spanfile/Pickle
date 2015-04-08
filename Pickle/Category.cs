@@ -80,7 +80,7 @@ namespace Pickle
 
         public Category<T> FindCat(string path)
         {
-            string[] pathArgs = path.Split('/');
+            string[] pathArgs = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
 
             if (pathArgs.Length < 1)
                 return this;
@@ -112,6 +112,8 @@ namespace Pickle
                 throw new ArgumentException(String.Format("Item {0} is already added", item));
 
             Range<T> previous = ranges.LastOrDefault();
+
+            Console.WriteLine("{0}: Adding item {1}", Path, item);
 
             if (previous == null)
                 ranges.Add(new Range<T>(item, 0, prob));
