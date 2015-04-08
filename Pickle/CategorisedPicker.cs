@@ -14,6 +14,10 @@ namespace Pickle
 
         Random rand;
 
+        /// <summary>
+        /// Creates a new CategorisedPicker, allowing you to define categories for different items. Works like a normal Picker.
+        /// </summary>
+        /// <param name="getTNameFunc">A method that takes in your item and has to return a unique name for that item.</param>
         public CategorisedPicker(Func<T, string> getTNameFunc)
         {
             rand = new Random();
@@ -23,10 +27,19 @@ namespace Pickle
             getTName = getTNameFunc;
         }
 
+        /// <summary>
+        /// Adds a category to the picker.
+        /// </summary>
+        /// <param name="name">The unique name of the category.</param>
         public void AddCategory(string name)
         {
             AddCategory(name, "");
         }
+        /// <summary>
+        /// Adds a category to another category in the picker.
+        /// </summary>
+        /// <param name="name">The unique name of the category.</param>
+        /// <param name="path">The path for the category.</param>
         public void AddCategory(string name, string path) // TODO: should this work just with one arg, the full path of the category you want to add?
         {
             if (path.Trim() == "")
@@ -43,15 +56,30 @@ namespace Pickle
             cat.AddCategory(name);
         }
 
+        /// <summary>
+        /// Removes a category from the picker.
+        /// </summary>
+        /// <param name="path">The path for the category.</param>
         public void RemoveCategory(string path)
         {
             FindCat(path).Remove();
         }
 
+        /// <summary>
+        /// Adds an item to the picker.
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <param name="prob">The probability for the item to be returned.</param>
         public void AddItem(T item, double prob)
         {
             AddItem("", item, prob);
         }
+        /// <summary>
+        /// Adds an item to a category in the picker.
+        /// </summary>
+        /// <param name="path">The path for the category where the item should be added.</param>
+        /// <param name="item">The item to add.</param>
+        /// <param name="prob">The probability for the item to be returned.</param>
         public void AddItem(string path, T item, double prob)
         {
             if (path.Trim() == "")
@@ -63,10 +91,19 @@ namespace Pickle
             FindCat(path).AddItem(item, prob);
         }
 
+        /// <summary>
+        /// Removes an item from the picker.
+        /// </summary>
+        /// <param name="item">The item to remove.</param>
         public void RemoveItem(T item)
         {
             RemoveItem("", item);
         }
+        /// <summary>
+        /// Removes an item from a category in the picker.
+        /// </summary>
+        /// <param name="path">The path of the category.</param>
+        /// <param name="item">The item to remove.</param>
         public void RemoveItem(string path, T item)
         {
             if (path.Trim() == "")
@@ -78,10 +115,21 @@ namespace Pickle
             FindCat(path).RemoveItem(item);
         }
 
+        /// <summary>
+        /// Updates the probability of an existing item in the picker.
+        /// </summary>
+        /// <param name="item">The item of which's probability to update.</param>
+        /// <param name="prob">The new probability of the item.</param>
         public void UpdateProbability(T item, double prob)
         {
             UpdateProbability("", item, prob);
         }
+        /// <summary>
+        /// Updates the probability of an existing item in a category in the picker.
+        /// </summary>
+        /// <param name="path">The path of the category.</param>
+        /// <param name="item">The item of which's probability to update.</param>
+        /// <param name="prob">The new probability of the item.</param>
         public void UpdateProbability(string path, T item, double prob)
         {
             if (path.Trim() == "")
@@ -93,25 +141,45 @@ namespace Pickle
             FindCat(path).UpdateProbability(item, prob);
         }
 
+        /// <summary>
+        /// Returns a random item from the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <returns></returns>
         public T NextItem()
         {
             return rootCat.NextItem();
         }
-        public T NextItem(string catPath)
+        /// <summary>
+        /// Returns a random item from a category in the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="path">The path of the category.</param>
+        /// <returns></returns>
+        public T NextItem(string path)
         {
-            if (catPath.Trim() == "")
+            if (path.Trim() == "")
                 return rootCat.NextItem();
 
-            return FindCat(catPath).NextItem();
+            return FindCat(path).NextItem();
         }
 
+        /// <summary>
+        /// Returns random items from the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="count">How many items to return.</param>
+        /// <returns></returns>
         public IEnumerable<T> NextItems(int count)
         {
             return rootCat.NextItems(count);
         }
-        public IEnumerable<T> NextItems(string catPath, int count)
+        /// <summary>
+        /// Returns random items from a category in the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="path">The path of the category.</param>
+        /// <param name="count">How many items to return.</param>
+        /// <returns></returns>
+        public IEnumerable<T> NextItems(string path, int count)
         {
-            return FindCat(catPath).NextItems(count);
+            return FindCat(path).NextItems(count);
         }
 
         Category<T> FindCat(string path)

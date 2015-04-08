@@ -139,7 +139,7 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Returns a random item from the picker, based on the probabilities of each item.
+        /// Returns random items from the picker, based on the probabilities of each item.
         /// </summary>
         /// <param name="count">How many items to return.</param>
         /// <returns></returns>
