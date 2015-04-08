@@ -43,6 +43,51 @@ namespace Pickle
             cat.AddCategory(name);
         }
 
+        public void AddItem(T item, double prob)
+        {
+            AddItem("", item, prob);
+        }
+        public void AddItem(string path, T item, double prob)
+        {
+            if (path.Trim() == "")
+            {
+                rootCat.AddItem(item, prob);
+                return;
+            }
+
+            FindCat(path).AddItem(item, prob);
+        }
+
+        public void RemoveItem(T item)
+        {
+            RemoveItem("", item);
+        }
+        public void RemoveItem(string path, T item)
+        {
+            if (path.Trim() == "")
+            {
+                rootCat.RemoveItem(item);
+                return;
+            }
+
+            FindCat(path).RemoveItem(item);
+        }
+
+        public void UpdateProbability(T item, double prob)
+        {
+            UpdateProbability("", item, prob);
+        }
+        public void UpdateProbability(string path, T item, double prob)
+        {
+            if (path.Trim() == "")
+            {
+                rootCat.UpdateProbability(item, prob);
+                return;
+            }
+
+            FindCat(path).UpdateProbability(item, prob);
+        }
+
         public void RemoveCategory(string path)
         {
             FindCat(path).Remove();
