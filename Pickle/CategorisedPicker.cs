@@ -33,7 +33,7 @@ namespace Pickle
         /// <param name="name">The unique name of the category.</param>
         /// <param name="path">The path for the category.</param>
         /// <exception cref="System.ArgumentException">Thrown when a category with given name already exists or path is invalid.</exception>
-        public void AddCategory(string path, bool addMissingCats = true) // TODO: should this work just with one arg, the full path of the category you want to add?
+        public void AddCategory(string path, bool addMissingCats = true)
         {
             if (path.Trim() == "")
                 throw new ArgumentException(String.Format("\"{0}\" is not a valid category path", path));
