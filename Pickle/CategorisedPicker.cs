@@ -28,33 +28,34 @@ namespace Pickle
         }
 
         /// <summary>
-        /// Adds a category to the picker.
-        /// </summary>
-        /// <param name="name">The unique name of the category.</param>
-        public void AddCategory(string name)
-        {
-            AddCategory(name, "");
-        }
-        /// <summary>
         /// Adds a category to another category in the picker.
         /// </summary>
         /// <param name="name">The unique name of the category.</param>
         /// <param name="path">The path for the category.</param>
         /// <exception cref="System.ArgumentException">Thrown when a category with given name already exists or path is invalid.</exception>
-        public void AddCategory(string name, string path) // TODO: should this work just with one arg, the full path of the category you want to add?
+        public void AddCategory(string path, bool addMissingCats = true) // TODO: should this work just with one arg, the full path of the category you want to add?
         {
             if (path.Trim() == "")
-            {
-                rootCat.AddCategory(name);
-                return;
-            }
-
-            Category<T> cat = FindCat(path);
-
-            if (cat == null)
                 throw new ArgumentException(String.Format("\"{0}\" is not a valid category path", path));
 
-            cat.AddCategory(name);
+            string[] pathArgs = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+
+            Category<T> cat = rootCat;
+            foreach (string catName in pathArgs.Take(pathArgs.Length - 1))
+            {
+                Category<T> newCat = cat.GetCat(catName);
+                if (newCat == null)
+                {
+                    if (addMissingCats)
+                        cat = cat.AddCategory(catName);
+                    else
+                        throw new ArgumentException(String.Format("\"{0}\" is not a valid category path", path));
+                }
+                else
+                    cat = newCat;
+            }
+
+            cat.AddCategory(pathArgs.Last());
         }
 
         /// <summary>

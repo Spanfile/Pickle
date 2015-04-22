@@ -38,18 +38,18 @@ namespace Example
 
             // create a new categorised picker
             // you need to give a method that takes in your item and returns a name for that item
-            // this could be a simple method in your item, such as YourItem.GetName()
+            // the method below simply calls .ToString() on the item
             CategorisedPicker<MyEnum> catPick = new CategorisedPicker<MyEnum>(m => m.ToString());
 
-            // add a category called "Test" to the picker
-            catPick.AddCategory("Test");
+            // add a category called "Another" to a category called "Test". the picker will add the missing categories automatically.
+            catPick.AddCategory("Test/Another");
 
-            // add a category called "Another" to the previously added category "Test"
-            catPick.AddCategory("Another", "Test");
+            // add a category called "MoreTest" to the previously added category. this time, the picker will throw an exception if the path contains missing categories.
+            catPick.AddCategory("Test/Another/MoreTest", false);
 
             // add two items to the "Another" category, both with 50% chance of being picked
-            catPick.AddItem("Test/Another", MyEnum.Item1, 50);
-            catPick.AddItem("Test/Another", MyEnum.Item2, 50);
+            catPick.AddItem("Test/Another/MoreTest", MyEnum.Item1, 50);
+            catPick.AddItem("Test/Another/MoreTest", MyEnum.Item2, 50);
 
             // pick one item from the picker
             // this will go through all categories, and picks an item from the first category it find that contains items

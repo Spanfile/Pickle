@@ -53,12 +53,14 @@ namespace Pickle
             Console.WriteLine(Path);
         }
 
-        public void AddCategory(string name)
+        public Category<T> AddCategory(string name)
         {
             if (childCats.Select(c => c.Name).Contains(name))
                 throw new ArgumentException(String.Format("Category {0} already contains child category {1}", Name, name));
 
-            childCats.Add(new Category<T>(name, this, rand));
+            Category<T> cat = new Category<T>(name, this, rand);
+            childCats.Add(cat);
+            return cat;
         }
 
         public void RemoveCategory(string name)
@@ -86,6 +88,16 @@ namespace Pickle
                 return null;
 
             return childCats.Where(c => c.Name == find).Single().FindCat(String.Join("/", pathArgs.Skip(1)));
+        }
+
+        public bool HasCat(string name)
+        {
+            return childCats.Find(c => c.Name == name) != null;
+        }
+
+        public Category<T> GetCat(string name)
+        {
+            return childCats.SingleOrDefault(c => c.Name == name);
         }
 
         public void AddItem(T item, double prob)
