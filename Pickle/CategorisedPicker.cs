@@ -36,7 +36,7 @@ namespace Pickle
         public void AddCategory(string path, bool addMissingCats = true)
         {
             if (path.Trim() == "")
-                throw new ArgumentException(String.Format("\"{0}\" is not a valid category path", path));
+                throw new ArgumentException($"{path} is not a valid category path");
 
             string[] pathArgs = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -49,7 +49,7 @@ namespace Pickle
                     if (addMissingCats)
                         cat = cat.AddCategory(catName);
                     else
-                        throw new ArgumentException(String.Format("\"{0}\" is not a valid category path", path));
+                        throw new ArgumentException($"{path} is not a valid category path");
                 }
                 else
                     cat = newCat;

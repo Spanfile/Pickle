@@ -56,7 +56,7 @@ namespace Pickle
         public Category<T> AddCategory(string name)
         {
             if (childCats.Select(c => c.Name).Contains(name))
-                throw new ArgumentException(String.Format("Category {0} already contains child category {1}", Name, name));
+                throw new ArgumentException($"Category {Name} already contains child category {name}");
 
             Category<T> cat = new Category<T>(name, this, rand);
             childCats.Add(cat);
@@ -66,7 +66,7 @@ namespace Pickle
         public void RemoveCategory(string name)
         {
             if (!childCats.Select(c => c.Name).Contains(name))
-                throw new ArgumentException(String.Format("Category {0} doesn't contain a child category {1}", Name, name));
+                throw new ArgumentException($"Category {Name} doesn't contain a child category {name}");
         }
 
         public void Remove()

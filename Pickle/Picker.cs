@@ -49,7 +49,7 @@ namespace Pickle
                 throw new ArgumentOutOfRangeException("prob");
 
             if (Items.Contains(item))
-                throw new ArgumentException(String.Format("Item {0} is already added", item));
+                throw new ArgumentException($"Item {item} is already added");
 
             Range<T> prev = ranges.LastOrDefault();
             if (prev == null)
@@ -66,7 +66,7 @@ namespace Pickle
         public void RemoveItem(T item)
         {
             if (!Items.Contains(item))
-                throw new ArgumentException(String.Format("Item {0} doesn't exist in the picker", item));
+                throw new ArgumentException($"Item {item} doesn't exist in the picker");
 
             ranges.RemoveAll(r => r.Item.Equals(item));
             UpdateRanges();

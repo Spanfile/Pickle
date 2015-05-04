@@ -27,7 +27,7 @@ namespace Tests
             foreach (MyEnum item in picker.NextItems(itemCount))
                 items[item] += 1;
 
-            Console.WriteLine(String.Join("\n", items.Select(p => String.Format("{0}: {1}, {2}%", p.Key, p.Value, (p.Value / (double)itemCount) * 100d))));
+            Console.WriteLine(String.Join("\n", items.Select(p => $"{p.Key}: {p.Value}, {(p.Value / (double)itemCount) * 100d}%")));
         }
     }
 }
