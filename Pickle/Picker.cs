@@ -6,13 +6,9 @@ namespace Pickle
 {
     public sealed class Picker<T>
     {
-        IEnumerable<T> Items
-        {
-            get { return ranges.Select(r => r.Item); }
-        }
+        IEnumerable<T> Items => ranges.Select(r => r.Item);
 
         List<Range<T>> ranges;
-
         Random rand;
 
         bool changes = false;

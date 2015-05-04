@@ -9,9 +9,7 @@ namespace Pickle
     public sealed class CategorisedPicker<T>
     {
         Category<T> rootCat;
-
         Func<T, string> getTName;
-
         Random rand;
 
         /// <summary>

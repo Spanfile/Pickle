@@ -10,10 +10,7 @@ namespace Pickle
     // cats everywhere
     internal class Category<T>
     {
-        public Category<T> Parent
-        {
-            get { return parent; }
-        }
+        public Category<T> Parent => parent;
 
         public string Path
         {
@@ -26,10 +23,7 @@ namespace Pickle
             }
         }
 
-        IEnumerable<string> CatNames
-        {
-            get { return childCats.Select(c => c.Name); }
-        }
+        IEnumerable<string> CatNames => childCats.Select(c => c.Name);
 
         public string Name { get; set; }
 

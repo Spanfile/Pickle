@@ -8,26 +8,14 @@ namespace Pickle
 {
     internal class Range<T>
     {
-        public T Item
-        {
-            get { return item; }
-        }
-
-        public double LowBound
-        {
-            get { return lowBound; }
-            set { lowBound = value; }
-        }
+        public T Item => item;
+        public double LowBound => lowBound;
+        public double Size => highBound - lowBound;
 
         public double HighBound
         {
             get { return highBound; }
             set { highBound = value; }
-        }
-
-        public double Size
-        {
-            get { return highBound - lowBound; }
         }
 
         T item;
