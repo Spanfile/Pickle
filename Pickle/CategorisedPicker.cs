@@ -30,7 +30,7 @@ namespace Pickle
         /// </summary>
         /// <param name="name">The unique name of the category.</param>
         /// <param name="path">The path for the category.</param>
-        /// <exception cref="System.ArgumentException">Thrown when a category with given name already exists or path is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when a category with given name already exists or path is invalid.</exception>
         public void AddCategory(string path, bool addMissingCats = true)
         {
             if (path.Trim() == "")
@@ -60,7 +60,7 @@ namespace Pickle
         /// Removes a category from the picker.
         /// </summary>
         /// <param name="path">The path for the category.</param>
-        /// <exception cref="System.ArgumentException">Thrown when the given path is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given path is invalid.</exception>
         public void RemoveCategory(string path)
         {
             FindCat(path).Remove();
@@ -71,8 +71,8 @@ namespace Pickle
         /// </summary>
         /// <param name="item">The item to add.</param>
         /// <param name="prob">The probability for the item to be returned.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when item has already been added.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
+        /// <exception cref="ArgumentException">Thrown when item has already been added.</exception>
         public void AddItem(T item, double prob)
         {
             AddItem("", item, prob);
@@ -83,8 +83,8 @@ namespace Pickle
         /// <param name="path">The path for the category where the item should be added.</param>
         /// <param name="item">The item to add.</param>
         /// <param name="prob">The probability for the item to be returned.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
-        /// <exception cref="System.ArgumentException">Thrown when item has already been added or when path is invalid.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than 1 or higher than 100.</exception>
+        /// <exception cref="ArgumentException">Thrown when item has already been added or when path is invalid.</exception>
         public void AddItem(string path, T item, double prob)
         {
             if (path.Trim() == "")
@@ -100,7 +100,7 @@ namespace Pickle
         /// Removes an item from the picker.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        /// <exception cref="System.ArgumentException">Thrown when item doesn't exist in the picker.</exception>
+        /// <exception cref="ArgumentException">Thrown when item doesn't exist in the picker.</exception>
         public void RemoveItem(T item)
         {
             RemoveItem("", item);
@@ -110,7 +110,7 @@ namespace Pickle
         /// </summary>
         /// <param name="path">The path of the category.</param>
         /// <param name="item">The item to remove.</param>
-        /// <exception cref="System.ArgumentException">Thrown when item doesn't exist in the picker or when path is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when item doesn't exist in the picker or when path is invalid.</exception>
         public void RemoveItem(string path, T item)
         {
             if (path.Trim() == "")
@@ -127,8 +127,8 @@ namespace Pickle
         /// </summary>
         /// <param name="item">The item of which's probability to update.</param>
         /// <param name="prob">The new probability of the item.</param>
-        /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given item isn't in the picker.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
         public void UpdateProbability(T item, double prob)
         {
             UpdateProbability("", item, prob);
@@ -139,8 +139,8 @@ namespace Pickle
         /// <param name="path">The path of the category.</param>
         /// <param name="item">The item of which's probability to update.</param>
         /// <param name="prob">The new probability of the item.</param>
-        /// <exception cref="System.ArgumentException">Thrown when the given item isn't in the picker or when path is invalid.</exception>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
+        /// <exception cref="ArgumentException">Thrown when the given item isn't in the picker or when path is invalid.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
         public void UpdateProbability(string path, T item, double prob)
         {
             if (path.Trim() == "")
@@ -156,7 +156,7 @@ namespace Pickle
         /// Returns a random item from the picker, based on the probabilities of each item.
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
         public T NextItem()
         {
             return rootCat.NextItem();
@@ -166,8 +166,8 @@ namespace Pickle
         /// </summary>
         /// <param name="path">The path of the category.</param>
         /// <returns></returns>
-        /// <exception cref="System.InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
-        /// <exception cref="System.ArgumentInvalidException">Thrown when path is invalid.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
+        /// <exception cref="ArgumentException">Thrown when path is invalid.</exception>
         public T NextItem(string path)
         {
             if (path.Trim() == "")
@@ -181,7 +181,7 @@ namespace Pickle
         /// </summary>
         /// <param name="count">How many items to return.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
         public IEnumerable<T> NextItems(int count)
         {
             return rootCat.NextItems(count);
@@ -192,8 +192,8 @@ namespace Pickle
         /// <param name="path">The path of the category.</param>
         /// <param name="count">How many items to return.</param>
         /// <returns></returns>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
-        /// <exception cref="System.ArgumentInvalidException">Thrown when path is invalid.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
+        /// <exception cref="ArgumentException">Thrown when path is invalid.</exception>
         public IEnumerable<T> NextItems(string path, int count)
         {
             return FindCat(path).NextItems(count);
