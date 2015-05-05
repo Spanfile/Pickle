@@ -37,11 +37,11 @@ namespace Pickle
         /// </summary>
         /// <param name="item">The item to add.</param>
         /// <param name="prob">The probability for the item to be returned.</param>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than one or higher than 100.</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when prob is less than zero or higher than 100.</exception>
         /// <exception cref="System.ArgumentException">Thrown when item has already been added.</exception>
         public void AddItem(T item, double prob)
         {
-            if (prob > 100 || prob < 1)
+            if (prob > 100 || prob < 0)
                 throw new ArgumentOutOfRangeException("prob");
 
             if (Items.Contains(item))
