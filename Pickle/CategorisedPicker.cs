@@ -100,7 +100,6 @@ namespace Pickle
         /// Removes an item from the picker.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        /// <exception cref="ArgumentException">Thrown when item doesn't exist in the picker.</exception>
         public void RemoveItem(T item)
         {
             RemoveItem("", item);
@@ -110,7 +109,7 @@ namespace Pickle
         /// </summary>
         /// <param name="path">The path of the category.</param>
         /// <param name="item">The item to remove.</param>
-        /// <exception cref="ArgumentException">Thrown when item doesn't exist in the picker or when path is invalid.</exception>
+        /// <exception cref="ArgumentException">Thrown when the path is invalid.</exception>
         public void RemoveItem(string path, T item)
         {
             if (path.Trim() == "")
