@@ -99,9 +99,9 @@ namespace Pickle
             picker.AddItem(item, prob);
         }
 
-        public void RemoveItem(T item)
+        public bool RemoveItem(T item)
         {
-            picker.RemoveItem(item);
+            return picker.RemoveItem(item);
         }
 
         public void UpdateProbability(T item, double prob)

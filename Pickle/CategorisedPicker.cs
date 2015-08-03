@@ -110,15 +110,14 @@ namespace Pickle
         /// <param name="path">The path of the category.</param>
         /// <param name="item">The item to remove.</param>
         /// <exception cref="ArgumentException">Thrown when the path is invalid.</exception>
-        public void RemoveItem(string path, T item)
+        public bool RemoveItem(string path, T item)
         {
             if (path.Trim() == "")
             {
-                rootCat.RemoveItem(item);
-                return;
+                return rootCat.RemoveItem(item);
             }
 
-            FindCat(path).RemoveItem(item);
+            return FindCat(path).RemoveItem(item);
         }
 
         /// <summary>

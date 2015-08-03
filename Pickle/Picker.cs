@@ -58,10 +58,11 @@ namespace Pickle
         /// Removes an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
         /// </summary>
         /// <param name="item">The item to remove.</param>
-        public void RemoveItem(T item)
+        public bool RemoveItem(T item)
         {
-            ranges.RemoveAll(r => r.Item.Equals(item));
+            int removed = ranges.RemoveAll(r => r.Item.Equals(item));
             UpdateRanges();
+            return removed > 0;
         }
 
         /// <summary>
