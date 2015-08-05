@@ -12,24 +12,24 @@ namespace Tests
     {
         public void Run()
         {
-            int itemCount = 1000000;
+            var itemCount = int.MaxValue;
 
-            Picker<MyEnum> picker = new Picker<MyEnum>();
+            var picker = new Picker<MyEnum>();
 
-            picker.AddItem(MyEnum.Item1, 25);
-            picker.AddItem(MyEnum.Item2, 25);
-            picker.AddItem(MyEnum.Item3, 25);
-            picker.AddItem(MyEnum.Item4, 25);
+            picker.AddItem(MyEnum.Item1, 1);
+            picker.AddItem(MyEnum.Item2, 2);
+            picker.AddItem(MyEnum.Item3, 3);
+            picker.AddItem(MyEnum.Item4, 4);
 
-            Console.WriteLine("Generating {0} values...", itemCount);
+            Console.WriteLine($"Generating {itemCount:N0} values...");
 
-            Stopwatch timer = Stopwatch.StartNew();
+            var timer = Stopwatch.StartNew();
 
             picker.NextItems(itemCount);
 
             timer.Stop();
 
-            Console.WriteLine("Time: {0}ms", timer.Elapsed.TotalMilliseconds);
+            Console.WriteLine($"Time: {timer.Elapsed.TotalMilliseconds}ms");
         }
     }
 }

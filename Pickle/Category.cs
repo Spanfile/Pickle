@@ -12,16 +12,7 @@ namespace Pickle
     {
         public Category<T> Parent => parent;
 
-        public string Path
-        {
-            get
-            {
-                if (parent == null)
-                    return Name;
-
-                return parent.Path + "/" + Name;
-            }
-        }
+        public string Path => parent == null ? Name : parent.Path + "/" + Name;
 
         IEnumerable<string> CatNames => childCats.Select(c => c.Name);
 
@@ -44,7 +35,7 @@ namespace Pickle
             this.rand = rand;
             this.parent = parent;
 
-            Console.WriteLine(Path);
+            //Console.WriteLine(Path);
         }
 
         public Category<T> AddCategory(string name)
@@ -52,7 +43,7 @@ namespace Pickle
             if (childCats.Select(c => c.Name).Contains(name))
                 throw new ArgumentException($"Category {Name} already contains child category {name}");
 
-            Category<T> cat = new Category<T>(name, this, rand);
+            var cat = new Category<T>(name, this, rand);
             childCats.Add(cat);
             return cat;
         }
@@ -61,6 +52,8 @@ namespace Pickle
         {
             if (!childCats.Select(c => c.Name).Contains(name))
                 throw new ArgumentException($"Category {Name} doesn't contain a child category {name}");
+
+            childCats.RemoveAll(c => c.Name == name);
         }
 
         public void Remove()
@@ -71,55 +64,34 @@ namespace Pickle
 
         public Category<T> FindCat(string path)
         {
-            string[] pathArgs = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+            var pathArgs = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (pathArgs.Length < 1)
                 return this;
 
-            string find = pathArgs.First();
+            var find = pathArgs.First();
 
             if (!childCats.Select(c => c.Name).Contains(find))
                 return null;
 
-            return childCats.Where(c => c.Name == find).Single().FindCat(String.Join("/", pathArgs.Skip(1)));
+            return childCats.Where(c => c.Name == find).Single().FindCat(string.Join("/", pathArgs.Skip(1)));
         }
 
-        public bool HasCat(string name)
-        {
-            return childCats.Find(c => c.Name == name) != null;
-        }
+        public bool HasCat(string name) => childCats.Find(c => c.Name == name) != null;
 
-        public Category<T> GetCat(string name)
-        {
-            return childCats.SingleOrDefault(c => c.Name == name);
-        }
+        public Category<T> GetCat(string name) => childCats.SingleOrDefault(c => c.Name == name);
 
-        public void AddItem(T item, double prob)
-        {
-            picker.AddItem(item, prob);
-        }
-
-        public bool RemoveItem(T item)
-        {
-            return picker.RemoveItem(item);
-        }
-
-        public void UpdateProbability(T item, double prob)
-        {
-            picker.UpdateProbability(item, prob);
-        }
-
-        public void ClearItems()
-        {
-            picker.ClearItems();
-        }
+        public void AddItem(T item, double weight) => picker.AddItem(item, weight);
+        public bool RemoveItem(T item) => picker.RemoveItem(item);
+        public void UpdateWeight(T item, double weight) => picker.UpdateWeight(item, weight);
+        public void ClearItems() => picker.ClearItems();
 
         public T NextItem()
         {
             if (picker.HasItems())
                 return picker.NextItem();
 
-            int index = rand.Next(0, childCats.Count - 1);
+            var index = rand.Next(0, childCats.Count - 1);
             return childCats[index].NextItem();
         }
 

@@ -11,23 +11,23 @@ namespace Tests
     {
         public void Run()
         {
-            int itemCount = 1000000;
+            var itemCount = 100000;
 
-            Picker<MyEnum> picker = new Picker<MyEnum>();
+            var picker = new Picker<MyEnum>();
 
-            picker.AddItem(MyEnum.Item1, 50);
-            picker.AddItem(MyEnum.Item2, 30);
-            picker.AddItem(MyEnum.Item3, 15);
-            picker.AddItem(MyEnum.Item4, 5);
+            picker.AddItem(MyEnum.Item1, 1);
+            picker.AddItem(MyEnum.Item2, 2);
+            picker.AddItem(MyEnum.Item3, 3);
+            picker.AddItem(MyEnum.Item4, 4);
 
-            Dictionary<MyEnum, int> items = Enum.GetValues(typeof(MyEnum)).Cast<MyEnum>().ToDictionary(n => n, n => 0);
+            var items = Enum.GetValues(typeof(MyEnum)).Cast<MyEnum>().ToDictionary(n => n, n => 0);
 
-            Console.WriteLine("Generating {0} values...", itemCount);
+            Console.WriteLine($"Generating {itemCount:N0} values...");
 
-            foreach (MyEnum item in picker.NextItems(itemCount))
+            foreach (var item in picker.NextItems(itemCount))
                 items[item] += 1;
 
-            Console.WriteLine(String.Join("\n", items.Select(p => $"{p.Key}: {p.Value}, {(p.Value / (double)itemCount) * 100d}%")));
+            Console.WriteLine(string.Join("\n", items.Select(p => $"{p.Key}: {p.Value}, {(p.Value / (double)itemCount) * 100d}%")));
         }
     }
 }

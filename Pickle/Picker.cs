@@ -6,12 +6,14 @@ namespace Pickle
 {
     public sealed class Picker<T>
     {
-        IEnumerable<T> Items => ranges.Select(r => r.Item);
+        IEnumerable<T> Items => items.Select(r => r.Key);
 
-        List<Range<T>> ranges;
+        Dictionary<T, double> items;
         Random rand;
 
-        bool changes = false;
+        bool dirty = false;
+        double sum = 0;
+        PickleItemRanges<T> ranges;
 
         /// <summary>
         /// Creates a new Picker which can be used to pick items based on their probabilities of being picked. Uses the default Random object.
@@ -27,42 +29,45 @@ namespace Pickle
         /// <param name="rand">Your Random object.</param>
         public Picker(Random rand)
         {
-            ranges = new List<Range<T>>();
+            items = new Dictionary<T, double>();
+            ranges = new PickleItemRanges<T>();
 
             this.rand = rand;
         }
 
         /// <summary>
-        /// Adds an item to the picker.
+        /// Adds an item to the picker
         /// </summary>
         /// <param name="item">The item to add.</param>
-        /// <param name="prob">The probability for the item to be returned.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than zero or higher than 100.</exception>
+        /// <param name="weight">The weight of the item.</param>
         /// <exception cref="ArgumentException">Thrown when item has already been added.</exception>
-        public void AddItem(T item, double prob)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when weight is less than 0.</exception>
+        public void AddItem(T item, double weight)
         {
-            if (prob > 100 || prob < 0)
-                throw new ArgumentOutOfRangeException("prob");
+            if (weight < 0)
+                throw new ArgumentOutOfRangeException(nameof(weight));
 
             if (Items.Contains(item))
                 throw new ArgumentException($"Item {item} is already added");
 
-            Range<T> prev = ranges.LastOrDefault();
-            if (prev == null)
-                ranges.Add(new Range<T>(item, 0, prob));
-            else
-                ranges.Add(new Range<T>(item, prev.HighBound, prev.HighBound + prob));
+            items.Add(item, weight);
+            dirty = true;
         }
 
         /// <summary>
-        /// Removes an item from the picker. Remember to update the probabilities of other items in the picker to maintain valid probabilities.
+        /// Removes an item from the picker.
         /// </summary>
-        /// <param name="item">The item to remove.</param>
+        /// <param name="item">True if the item is succesfully removed; otherwise false.</param>
+        /// <returns></returns>
         public bool RemoveItem(T item)
         {
-            int removed = ranges.RemoveAll(r => r.Item.Equals(item));
-            UpdateRanges();
-            return removed > 0;
+            if (items.Remove(item))
+            {
+                dirty = true;
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -70,51 +75,34 @@ namespace Pickle
         /// </summary>
         public void ClearItems()
         {
-            ranges.Clear();
+            items.Clear();
+            dirty = true;
         }
 
         /// <summary>
-        /// Updates the probability of an existing item in the picker.
+        /// Updates the weight of an existing item in the picker.
         /// </summary>
-        /// <param name="item">The item of which's probability to update.</param>
-        /// <param name="prob">The new probability of the item.</param>
+        /// <param name="item">The item of which's weight to update.</param>
+        /// <param name="weight">The new weight for the item.</param>
         /// <exception cref="ArgumentException">Thrown when the given item isn't in the picker.</exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when prob is less than one or more than 100.</exception>
-        public void UpdateProbability(T item, double prob)
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when weight is less than 0.</exception>
+        public void UpdateWeight(T item, double weight)
         {
             if (!Items.Contains(item))
                 throw new ArgumentException("Item hasn't been added to the picker");
 
-            if (prob > 100 || prob < 1)
-                throw new ArgumentOutOfRangeException("prob");
+            if (weight < 0)
+                throw new ArgumentOutOfRangeException(nameof(weight));
 
-            ranges.Single(r => r.Item.Equals(item)).HighBound = prob;
-            UpdateRanges();
+            items[item] = weight;
+            dirty = true;
         }
 
         /// <summary>
         /// Returns true if the picker contains any items.
         /// </summary>
         /// <returns></returns>
-        public bool HasItems()
-        {
-            return ranges.Any();
-        }
-
-        void UpdateRanges()
-        {
-            double prev = 0;
-            foreach (Range<T> range in ranges)
-            {
-                if (prev > 0)
-                {
-                    range.Move(range.LowBound - prev);
-                    prev = range.HighBound;
-                }
-            }
-
-            changes = true;
-        }
+        public bool HasItems() => items.Any();
 
         /// <summary>
         /// Returns a random item from the picker, based on the probabilities of each item.
@@ -123,17 +111,21 @@ namespace Pickle
         /// <exception cref="InvalidOperationException">Thrown when the sum of item probabilities isn't 100.</exception>
         public T NextItem()
         {
-            if (changes)
-            {
-                if (ranges.Select(r => r.Size).Sum() != 100)
-                    throw new InvalidOperationException("Sum of item probabilites isn't 100");
+            if (!HasItems())
+                throw new InvalidOperationException("Picker contains no items"); // TODO: should this throw an exception or just return default(T)?
 
-                changes = false;
+            if (dirty)
+            {
+                sum = items.Select(p => p.Value).Sum();
+
+                ranges.Clear();
+                foreach (var item in items.Select(p => new { Item = p.Key, Weight = p.Value }))
+                    ranges.Add(item.Item, item.Weight);
+
+                dirty = false;
             }
 
-            double val = rand.NextDouble() * 100d;
-
-            return ranges.Where(r => r.Contains(val)).Select(r => r.Item).Single();
+            return ranges[rand.NextDouble() * sum];
         }
 
         /// <summary>
@@ -147,7 +139,7 @@ namespace Pickle
             if (count < 1)
                 throw new ArgumentOutOfRangeException("count");
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 yield return NextItem();
         }
     }
