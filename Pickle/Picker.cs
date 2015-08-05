@@ -35,6 +35,13 @@ namespace Pickle
             this.rand = rand;
         }
 
+        /// <summary>
+        /// Adds an item to the picker
+        /// </summary>
+        /// <param name="item">The item to add.</param>
+        /// <param name="weight">The weight of the item.</param>
+        /// <exception cref="ArgumentException">Thrown when item has already been added.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when weight is less than 0.</exception>
         public void AddItem(T item, double weight)
         {
             if (weight < 0)
@@ -47,6 +54,11 @@ namespace Pickle
             dirty = true;
         }
 
+        /// <summary>
+        /// Removes an item from the picker.
+        /// </summary>
+        /// <param name="item">True if the item is succesfully removed; otherwise false.</param>
+        /// <returns></returns>
         public bool RemoveItem(T item)
         {
             if (items.Remove(item))
@@ -67,6 +79,13 @@ namespace Pickle
             dirty = true;
         }
 
+        /// <summary>
+        /// Updates the weight of an existing item in the picker.
+        /// </summary>
+        /// <param name="item">The item of which's weight to update.</param>
+        /// <param name="weight">The new weight for the item.</param>
+        /// <exception cref="ArgumentException">Thrown when the given item isn't in the picker.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when weight is less than 0.</exception>
         public void UpdateWeight(T item, double weight)
         {
             if (!Items.Contains(item))
@@ -120,7 +139,7 @@ namespace Pickle
             if (count < 1)
                 throw new ArgumentOutOfRangeException("count");
 
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
                 yield return NextItem();
         }
     }
