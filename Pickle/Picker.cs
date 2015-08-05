@@ -44,14 +44,28 @@ namespace Pickle
                 throw new ArgumentException($"Item {item} is already added");
 
             items.Add(item, weight);
+            dirty = true;
         }
 
-        public bool RemoveItem(T item) => items.Remove(item);
+        public bool RemoveItem(T item)
+        {
+            if (items.Remove(item))
+            {
+                dirty = true;
+                return true;
+            }
+
+            return false;
+        }
 
         /// <summary>
         /// Removes all items in the picker.
         /// </summary>
-        public void ClearItems() => items.Clear();
+        public void ClearItems()
+        {
+            items.Clear();
+            dirty = true;
+        }
 
         public void UpdateWeight(T item, double weight)
         {
@@ -62,6 +76,7 @@ namespace Pickle
                 throw new ArgumentOutOfRangeException(nameof(weight));
 
             items[item] = weight;
+            dirty = true;
         }
 
         /// <summary>
@@ -91,9 +106,7 @@ namespace Pickle
                 dirty = false;
             }
 
-            double val = rand.NextDouble() * sum;
-
-            return ranges[val];
+            return ranges[rand.NextDouble() * sum];
         }
 
         /// <summary>
