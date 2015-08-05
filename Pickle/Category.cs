@@ -106,7 +106,7 @@ namespace Pickle
 
         public void UpdateProbability(T item, double prob)
         {
-            picker.UpdateProbability(item, prob);
+            picker.UpdateWeight(item, prob);
         }
 
         public void ClearItems()
