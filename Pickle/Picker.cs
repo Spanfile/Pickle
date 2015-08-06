@@ -137,9 +137,54 @@ namespace Pickle
         public IEnumerable<T> NextItems(int count)
         {
             if (count < 1)
-                throw new ArgumentOutOfRangeException("count");
+                throw new ArgumentOutOfRangeException(nameof(count));
 
             for (var i = 0; i < count; i++)
+                yield return NextItem();
+        }
+
+        /// <summary>
+        /// Returns random items from the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="count">How many items to return.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
+        public IEnumerable<T> NextItems(uint count)
+        {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            for (var i = 0U; i < count; i++)
+                yield return NextItem();
+        }
+
+        /// <summary>
+        /// Returns random items from the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="count">How many items to return.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
+        public IEnumerable<T> NextItems(long count)
+        {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            for (var i = 0L; i < count; i++)
+                yield return NextItem();
+        }
+
+        /// <summary>
+        /// Returns random items from the picker, based on the probabilities of each item.
+        /// </summary>
+        /// <param name="count">How many items to return.</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when count is less than one.</exception>
+        public IEnumerable<T> NextItems(ulong count)
+        {
+            if (count < 1)
+                throw new ArgumentOutOfRangeException(nameof(count));
+
+            for (var i = 0UL; i < count; i++)
                 yield return NextItem();
         }
     }
